@@ -1,5 +1,7 @@
 package com.crudapi.example.crudemo.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
 @Entity
@@ -13,6 +15,10 @@ public class Jobs {
 
     @Column(name="job_desc")
     private String job_Desc;
+
+    @JsonIgnore
+    @OneToOne(mappedBy="job")
+    private Evaluation evaluation;
 
     public Jobs() {}
 
@@ -34,6 +40,14 @@ public class Jobs {
 
     public void setJob_Desc(String job_Desc) {
         this.job_Desc = job_Desc;
+    }
+
+    public Evaluation getEvaluation() {
+        return evaluation;
+    }
+
+    public void setEvaluation(Evaluation evaluation) {
+        this.evaluation = evaluation;
     }
 
     @Override

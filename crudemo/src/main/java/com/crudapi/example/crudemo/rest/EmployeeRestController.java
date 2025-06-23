@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/EmApi")
 public class EmployeeRestController {
 
     private EmployeeService employeeService;
@@ -69,4 +69,6 @@ public class EmployeeRestController {
 
        return "Deleted employee id: " + employeeId;
     }
+
+
 }
