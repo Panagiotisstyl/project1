@@ -1,5 +1,7 @@
 package com.crudapi.example.crudemo.rest;
 
+import com.crudapi.example.crudemo.dtos.EvaluationCreationDTO;
+import com.crudapi.example.crudemo.dtos.EvaluationDTO;
 import com.crudapi.example.crudemo.entity.Evaluation;
 import com.crudapi.example.crudemo.service.EvaluationService;
 import jakarta.transaction.Transactional;
@@ -19,24 +21,22 @@ public class EvaluationRestController {
     }
 
     @GetMapping("/evaluation")
-    public List<Evaluation> findAll() {
+    public List<EvaluationDTO> findAll() {
 
-        return evaluationService.findAll();
+        return evaluationService.getAllEvaluations();
 
     }
 
     @GetMapping("/evaluation/{evaluationId}")
-    public Evaluation findById(@PathVariable int evaluationId) {
+    public EvaluationDTO findById(@PathVariable int evaluationId) {
 
-        Optional<Evaluation> evaluation = evaluationService.findById(evaluationId);
-        return evaluation.orElseThrow(() -> new RuntimeException("Evaluation not found with id " + evaluationId));
+       return evaluationService.getEvaluationById(evaluationId);
+
     }
 
     @PostMapping("/evaluation")
-    public Evaluation save(@RequestBody Evaluation evaluation) {
-
-        return evaluationService.save(evaluation);
-
+    public Evaluation save(@RequestBody EvaluationCreationDTO dto) {
+        return evaluationService.createEvaluation(dto);
     }
 
     @Transactional
@@ -72,7 +72,7 @@ public class EvaluationRestController {
     }
 
     @GetMapping("/evaluation/byscore")
-    public List<Evaluation> getByScore() {
+    public List<EvaluationDTO> getByScore() {
 
         return evaluationService.findByEvaluationScore();
 

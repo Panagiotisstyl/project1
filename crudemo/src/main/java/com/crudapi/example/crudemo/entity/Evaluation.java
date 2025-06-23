@@ -1,8 +1,7 @@
 package com.crudapi.example.crudemo.entity;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+
 import jakarta.persistence.*;
 
 @Entity
@@ -14,12 +13,10 @@ public class Evaluation {
     @Id
     private int id;
 
-    @JsonIgnoreProperties({"firstName","lastName","email"})
     @OneToOne(cascade=CascadeType.ALL)
     @JoinColumn(name="employee_id")
     private Employee employee;
 
-    @JsonIgnoreProperties({"job_Desc"})
     @OneToOne(cascade=CascadeType.ALL)
     @JoinColumn(name="job_id")
     private Jobs job;
