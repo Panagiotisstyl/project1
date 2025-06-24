@@ -1,60 +1,51 @@
 package com.crudapi.example.crudemo.rest;
 
-import com.crudapi.example.crudemo.dtos.EvaluationCreationDTO;
-import com.crudapi.example.crudemo.dtos.EvaluationDTO;
+import com.crudapi.example.crudemo.converter.EvaluationConverter;
+import com.crudapi.example.crudemo.dtos.EvaluationDto;
+import com.crudapi.example.crudemo.dtos.EvaluationResponseDto;
+import com.crudapi.example.crudemo.entity.Employee;
 import com.crudapi.example.crudemo.entity.Evaluation;
 import com.crudapi.example.crudemo.service.EvaluationService;
 import jakarta.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+@RequiredArgsConstructor
 @RestController
-@RequestMapping("EvApi")
+@RequestMapping("api/v1")
 public class EvaluationRestController {
 
-    private EvaluationService evaluationService;
+    private final EvaluationConverter evaluationConverter;
+    private final EvaluationService evaluationService;
 
-    public EvaluationRestController(EvaluationService evaluationService) {
-        this.evaluationService = evaluationService;
-    }
+
 
     @GetMapping("/evaluation")
-    public List<EvaluationDTO> findAll() {
-
-        return evaluationService.getAllEvaluations();
-
+    public List<EvaluationResponseDto> findAll() {
+        return evaluationConverter.toDtoList(evaluationService.findAll());
     }
 
     @GetMapping("/evaluation/{evaluationId}")
-    public EvaluationDTO findById(@PathVariable int evaluationId) {
+    public EvaluationResponseDto findById(@PathVariable int evaluationId) {
 
-       return evaluationService.getEvaluationById(evaluationId);
+       return evaluationConverter.toResponseDto(evaluationService.getEvaluationById(evaluationId));
 
     }
 
     @PostMapping("/evaluation")
-    public Evaluation save(@RequestBody EvaluationCreationDTO dto) {
-        return evaluationService.createEvaluation(dto);
+    public EvaluationResponseDto save(@RequestBody EvaluationDto dto) {
+        return evaluationConverter.toResponseDto(evaluationService.save(evaluationConverter.toEntity(dto)));
     }
 
-    @Transactional
     @PutMapping("/evaluation/{evaluationId}")
-    public void updateEvaluation(@PathVariable int evaluationId, @RequestBody Evaluation theEvaluation) {
-
-        Optional<Evaluation> evaluation = evaluationService.findById(evaluationId);
-
-        if (evaluation.isPresent()) {
-
-            Evaluation dbEvaluation = evaluation.get();
-            dbEvaluation.setScore(theEvaluation.getScore());
-            dbEvaluation.setYears_of_Empl(theEvaluation.getYears_of_Empl());
-            dbEvaluation.setScore(theEvaluation.getScore());
-
-        }else{
-            throw new RuntimeException("Evaluation not found with id " + evaluationId);
-        }
+    public void updateEvaluation(@PathVariable int evaluationId, @RequestBody EvaluationDto dto) {
+        Evaluation em=evaluationService.findById(evaluationId).get();
+        Evaluation emupdted=evaluationConverter.toEntity(dto,em);
+        evaluationService.save(emupdted);
     }
 
     @DeleteMapping("/evaluation/{evaluationId}")
@@ -72,9 +63,7 @@ public class EvaluationRestController {
     }
 
     @GetMapping("/evaluation/byscore")
-    public List<EvaluationDTO> getByScore() {
-
-        return evaluationService.findByEvaluationScore();
-
+    public List<EvaluationResponseDto> getByScore() {
+        return evaluationConverter.toDtoList(evaluationService.findByEvaluationScore());
     }
 }
