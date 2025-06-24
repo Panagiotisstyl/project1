@@ -19,8 +19,8 @@ import java.util.stream.Collectors;
 @Service
 public class EvaluationServiceImpl implements EvaluationService {
 
-    private final EmployeeRepository employeeRepository;
-    private final JobsRepository jobsRepository;
+    private EmployeeRepository employeeRepository;
+    private  JobsRepository jobsRepository;
     private EvaluationRepository evaluationRepository;
 
     @Autowired
@@ -77,6 +77,7 @@ public class EvaluationServiceImpl implements EvaluationService {
 
     @Override
     public Evaluation createEvaluation(EvaluationCreationDTO dto) {
+
         Employee employee=employeeRepository.findById(dto.getEmployeeId()).orElseThrow(() -> new RuntimeException("Employee not found "));
 
         Jobs job=jobsRepository.findById(dto.getJobId()).orElseThrow(() -> new RuntimeException("Job not found "));

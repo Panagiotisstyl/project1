@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
+import java.util.List;
+
 @Entity
 @Table(name="employee")
 public class Employee {
@@ -23,8 +25,8 @@ public class Employee {
     private String email;
 
     @JsonIgnore
-    @OneToOne(mappedBy="employee")
-    private Evaluation evaluation;
+    @OneToMany(mappedBy="employee")
+    private List<Evaluation> evaluation;
 
 
 
@@ -68,11 +70,11 @@ public class Employee {
         this.email = email;
     }
 
-    public Evaluation getEvaluation() {
+    public List<Evaluation> getEvaluation() {
         return evaluation;
     }
 
-    public void setEvaluation(Evaluation evaluation) {
+    public void setEvaluation(List<Evaluation> evaluation) {
         this.evaluation = evaluation;
     }
 

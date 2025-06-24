@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
+import java.util.List;
+
 @Entity
 @Table(name="jobs")
 public class Jobs {
@@ -17,8 +19,8 @@ public class Jobs {
     private String job_Desc;
 
     @JsonIgnore
-    @OneToOne(mappedBy="job")
-    private Evaluation evaluation;
+    @OneToMany(mappedBy="job")
+    private List<Evaluation> evaluation;
 
     public Jobs() {}
 
@@ -42,11 +44,11 @@ public class Jobs {
         this.job_Desc = job_Desc;
     }
 
-    public Evaluation getEvaluation() {
+    public List<Evaluation> getEvaluation() {
         return evaluation;
     }
 
-    public void setEvaluation(Evaluation evaluation) {
+    public void setEvaluation(List<Evaluation> evaluation) {
         this.evaluation = evaluation;
     }
 
