@@ -5,7 +5,6 @@ import com.crudapi.example.crudemo.dtos.EmployeeDto;
 import com.crudapi.example.crudemo.dtos.EmployeeResponseDto;
 import com.crudapi.example.crudemo.entity.Employee;
 import com.crudapi.example.crudemo.service.EmployeeService;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -31,9 +30,10 @@ public class EmployeeRestController {
     }
 
     @PostMapping("/employees")
-    public EmployeeResponseDto addEmployee(@RequestBody Employee theEmployee) {
+    public EmployeeResponseDto addEmployee(@RequestBody EmployeeDto theEmployeedto
+    ) {
 
-        return employeeConverter.toResponseDto(employeeService.save(theEmployee));
+        return employeeConverter.toResponseDto(employeeService.save(employeeConverter.toEntity(theEmployeedto)));
     }
 
 

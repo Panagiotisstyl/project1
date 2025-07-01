@@ -7,7 +7,6 @@ import com.crudapi.example.crudemo.dtos.JobDto;
 import com.crudapi.example.crudemo.dtos.JobResponseDto;
 import com.crudapi.example.crudemo.entity.Jobs;
 import com.crudapi.example.crudemo.service.JobsService;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 

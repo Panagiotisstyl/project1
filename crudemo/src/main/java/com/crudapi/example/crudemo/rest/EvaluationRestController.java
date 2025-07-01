@@ -3,14 +3,12 @@ package com.crudapi.example.crudemo.rest;
 import com.crudapi.example.crudemo.converter.EvaluationConverter;
 import com.crudapi.example.crudemo.dtos.EvaluationDto;
 import com.crudapi.example.crudemo.dtos.EvaluationResponseDto;
-import com.crudapi.example.crudemo.entity.Employee;
 import com.crudapi.example.crudemo.entity.Evaluation;
 import com.crudapi.example.crudemo.service.EvaluationService;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
+
 import java.util.List;
 import java.util.Optional;
 

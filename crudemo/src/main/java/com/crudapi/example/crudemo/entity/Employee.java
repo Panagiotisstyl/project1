@@ -10,7 +10,7 @@ import lombok.*;
 @Getter
 @NoArgsConstructor
 @Entity
-@ToString
+@ToString(exclude = "evaluation")
 @Table(name="employee")
 public class Employee {
 
@@ -28,16 +28,20 @@ public class Employee {
     @Column(name="email")
     private String email;
 
+    @Column(name="date_joined")
+    private long date_joined;
+
     @JsonIgnore
     @OneToOne(mappedBy="employee")
     private Evaluation evaluation;
 
     @Builder
-    public Employee(int id, String firstName, String lastName, String email, Evaluation evaluation) {
+    public Employee(int id, String firstName, String lastName, String email, long date_joined,Evaluation evaluation) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
+        this.date_joined = date_joined;
         this.evaluation = evaluation;
     }
 }

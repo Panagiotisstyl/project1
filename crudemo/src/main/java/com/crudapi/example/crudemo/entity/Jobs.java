@@ -11,7 +11,7 @@ import lombok.ToString;
 @Getter
 @NoArgsConstructor
 @Entity
-@ToString
+@ToString(exclude = "evaluation")
 @Table(name="jobs")
 public class Jobs {
 

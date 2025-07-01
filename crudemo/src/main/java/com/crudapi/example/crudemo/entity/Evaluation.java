@@ -10,7 +10,6 @@ import lombok.*;
 @Getter
 @NoArgsConstructor
 @Entity
-@ToString
 @Table(name="evaluation")
 public class Evaluation {
 
@@ -34,5 +33,14 @@ public class Evaluation {
     private int score;
 
 
-
+    @Override
+    public String toString() {
+        return "Evaluation{" +
+                "id=" + id +
+                ", employeeId=" + employee.getId() +
+                ", jobId=" + job.getId() +
+                ", years_of_Empl=" + years_of_Empl +
+                ", score=" + score +
+                '}';
+    }
 }
