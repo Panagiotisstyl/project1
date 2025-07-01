@@ -23,14 +23,14 @@ public class Jobs {
     @Column(name="job_desc")
     private String job_Desc;
 
-    @JsonIgnore
+   /* @JsonIgnore
     @OneToOne(mappedBy="job")
-    private Evaluation evaluation;
+    private Evaluation evaluation;*/
 
     @Builder
-    public Jobs(int id,String job_Desc, Evaluation evaluation) {
+    public Jobs(int id,String job_Desc) {
         this.id = id;
         this.job_Desc = job_Desc;
-        this.evaluation = evaluation;
+        //this.evaluation = evaluation;
     }
 }

@@ -29,19 +29,19 @@ public class Employee {
     private String email;
 
     @Column(name="date_joined")
-    private long date_joined;
+    private long dateJoined;
 
-    @JsonIgnore
+   /* @JsonIgnore
     @OneToOne(mappedBy="employee")
-    private Evaluation evaluation;
+    private Evaluation evaluation;*/
 
     @Builder
-    public Employee(int id, String firstName, String lastName, String email, long date_joined,Evaluation evaluation) {
+    public Employee(int id, String firstName, String lastName, String email, long dateJoined) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
-        this.date_joined = date_joined;
-        this.evaluation = evaluation;
+        this.dateJoined = dateJoined;
+       // this.evaluation = evaluation;
     }
 }

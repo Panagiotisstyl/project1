@@ -18,11 +18,11 @@ public class Evaluation {
     @Id
     private int id;
 
-    @OneToOne(cascade=CascadeType.ALL)
+    @OneToOne
     @JoinColumn(name="employee_id")
     private Employee employee;
 
-    @OneToOne(cascade=CascadeType.ALL)
+    @OneToOne
     @JoinColumn(name="job_id")
     private Jobs job;
 
