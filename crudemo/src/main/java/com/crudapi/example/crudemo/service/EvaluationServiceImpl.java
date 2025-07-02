@@ -3,8 +3,6 @@ package com.crudapi.example.crudemo.service;
 import com.crudapi.example.crudemo.dao.EmployeeRepository;
 import com.crudapi.example.crudemo.dao.EvaluationRepository;
 import com.crudapi.example.crudemo.dao.JobsRepository;
-import com.crudapi.example.crudemo.dtos.EvaluationDto;
-import com.crudapi.example.crudemo.dtos.EvaluationResponseDto;
 import com.crudapi.example.crudemo.entity.Evaluation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
@@ -12,7 +10,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 public class EvaluationServiceImpl implements EvaluationService {

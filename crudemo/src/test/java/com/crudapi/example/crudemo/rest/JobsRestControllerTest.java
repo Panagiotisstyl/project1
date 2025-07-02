@@ -1,21 +1,18 @@
 package com.crudapi.example.crudemo.rest;
 
+import com.crudapi.example.crudemo.converter.JobConverter;
 import com.crudapi.example.crudemo.dao.JobsRepository;
 import com.crudapi.example.crudemo.dtos.JobDto;
 import com.crudapi.example.crudemo.dtos.JobResponseDto;
 import com.crudapi.example.crudemo.entity.Jobs;
+import com.crudapi.example.crudemo.factories.JobFactory;
 import com.fasterxml.jackson.core.type.TypeReference;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
 
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 
 public class JobsRestControllerTest extends ControllerTestHelper{
@@ -26,23 +23,13 @@ public class JobsRestControllerTest extends ControllerTestHelper{
     private JobsRepository jobsRepository;
 
 
-    @BeforeEach
-    public void clearDb(){
-        jobsRepository.deleteAll();
-    }
-
     @Test
     public void testAddJob()  throws Exception {
 
-        JobDto jobDto= JobDto.builder()
-                .job_Desc("BackEnd Engineer")
-                .build();
+        JobDto jobDto= JobFactory.createJobDto("BackEnd Engineer");
 
-        var result = mockMvc.perform(post("/api/v1/jobs")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(jobDto)))
-                .andExpect(status().isOk())
-                .andReturn();
+        var result=performPost("/api/v1/jobs",jobDto);
+
 
         var returnedJob=readingValue(result,JobResponseDto.class);
 
@@ -56,37 +43,26 @@ public class JobsRestControllerTest extends ControllerTestHelper{
     @Test
     public void testFindAll() throws Exception {
 
-        Jobs job1=jobsRepository.save(Jobs.builder().job_Desc("BackEnd Engineer").build());
 
-        Jobs job2=jobsRepository.save(Jobs.builder().job_Desc("FrontEnd Engineer").build());
+        Jobs job1=jobsRepository.save(JobFactory.createJob("BackEnd Engineer"));
+
+        Jobs job2=jobsRepository.save(JobFactory.createJob("FrontEnd Engineer"));
 
         List<JobResponseDto> actualJobs=List.of(
-                JobResponseDto.builder()
-                        .id(job1.getId())
-                        .job_Desc("BackEnd Engineer")
-                        .build(),
-
-                JobResponseDto.builder()
-                        .id(job2.getId())
-                        .job_Desc("FrontEnd Engineer")
-                        .build()
-        );
-
-        var result = mockMvc.perform(get("/api/v1/jobs"))
-                .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andReturn();
-
-        List<JobResponseDto> expectedJob = objectMapper.readValue(
-                result.getResponse().getContentAsString(),
-                new TypeReference<List<JobResponseDto>>(){}
+                JobConverter.toResponseDto(job1),
+                JobConverter.toResponseDto(job2)
         );
 
 
+        var result=performGet("/api/v1/jobs");
+
+
+        List<JobResponseDto> expectedJob=readingValue(result,new TypeReference<List<JobResponseDto>>(){});
 
         assertThat(jobsRepository.findAll()).hasSize(2);
 
         for(int i=0;i<2;i++){
+
             JobResponseDto actualJobi=actualJobs.get(i);
             JobResponseDto expectedJobi=expectedJob.get(i);
 
@@ -99,21 +75,12 @@ public class JobsRestControllerTest extends ControllerTestHelper{
     @Test
     public void testFindById() throws Exception {
 
-        Jobs pan=jobsRepository.save(Jobs.builder().job_Desc("BackEnd Engineer").build());
+        Jobs pan=jobsRepository.save(JobFactory.createJob("BackEnd Engineer"));
 
-        JobResponseDto actualJob=JobResponseDto.builder()
-                .id(pan.getId())
-                .job_Desc(pan.getJob_Desc())
-                .build();
-
-        String url="/api/v1/jobs/"+pan.getId();
-
-        var result = mockMvc.perform(get(url))
-                .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andReturn();
+        JobResponseDto actualJob=JobConverter.toResponseDto(pan);
 
 
+        var result=performGet("/api/v1/jobs/"+pan.getId());
 
         var returnedjob=readingValue(result,JobResponseDto.class);
 
@@ -124,19 +91,12 @@ public class JobsRestControllerTest extends ControllerTestHelper{
     @Test
     public void testUpdateJob()  throws Exception {
 
-        Jobs pan=jobsRepository.save(Jobs.builder().job_Desc("BackEnd Engineer").build());
+        Jobs pan=jobsRepository.save(JobFactory.createJob("BackEnd Engineer"));
 
-        JobDto jobDto= JobDto.builder()
-                .job_Desc("BackEnd Engineer")
-                .build();
+        JobDto jobDto= JobFactory.createJobDto("FrontEnd Engineer");
 
-        String url="/api/v1/jobs/"+pan.getId();
 
-        var result = mockMvc.perform(put(url)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(jobDto)))
-                .andExpect(status().isOk())
-                .andReturn();
+        performPut("/api/v1/jobs/"+pan.getId(),jobDto);
 
         Jobs job= jobsRepository.findById(pan.getId()).get();
 
@@ -146,14 +106,10 @@ public class JobsRestControllerTest extends ControllerTestHelper{
 
     @Test
     public void testDeleteJob()  throws Exception {
-        Jobs job=jobsRepository.save(Jobs.builder().job_Desc("BackEnd Engineer").build());
 
-        String url="/api/v1/jobs/"+job.getId();
+        Jobs job=jobsRepository.save(JobFactory.createJob("BackEnd Engineer"));
 
-        var result = mockMvc.perform(delete(url)
-                        .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andReturn();
+        performDelete("/api/v1/jobs/"+job.getId());
 
         assertThat(jobsRepository.findById(job.getId())).isEmpty();
 

@@ -17,29 +17,28 @@ import java.util.Optional;
 public class EmployeeRestController {
 
     private final EmployeeService employeeService;
-    private final EmployeeConverter employeeConverter;
 
     @GetMapping("/employees")
     public List<EmployeeResponseDto> findALl() {
-        return employeeConverter.toDtoList(employeeService.findAll());
+        return EmployeeConverter.toDtoList(employeeService.findAll());
     }
 
     @GetMapping("/employees/{employeeId}")
     public EmployeeResponseDto findById(@PathVariable int employeeId) {
-        return employeeConverter.toResponseDto(employeeService.findById(employeeId).get());
+        return EmployeeConverter.toResponseDto(employeeService.findById(employeeId).get());
     }
 
     @PostMapping("/employees")
     public EmployeeResponseDto addEmployee(@RequestBody EmployeeDto theEmployeedto) {
 
-        return employeeConverter.toResponseDto(employeeService.save(employeeConverter.toEntity(theEmployeedto)));
+        return EmployeeConverter.toResponseDto(employeeService.save(EmployeeConverter.toEntity(theEmployeedto)));
     }
 
 
     @PutMapping("/employees/{employeeId}")
     public void updateEmployee(@PathVariable int employeeId, @RequestBody EmployeeDto theEmployeedto) {
         Employee employee = employeeService.findById(employeeId).get();
-        Employee employeeToUpdate = employeeConverter.toEntity(theEmployeedto, employee);
+        Employee employeeToUpdate = EmployeeConverter.toEntity(theEmployeedto, employee);
         employeeService.save(employeeToUpdate);
     }
 

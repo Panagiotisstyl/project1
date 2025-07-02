@@ -5,20 +5,18 @@ import com.crudapi.example.crudemo.dtos.EmployeeResponseDto;
 import com.crudapi.example.crudemo.entity.Employee;
 import com.crudapi.example.crudemo.utilites.DateUtil;
 import jakarta.annotation.Nullable;
-import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Component
 public class EmployeeConverter {
 
 
-    public Employee toEntity(EmployeeDto employeeDto) {
+    public static Employee toEntity(EmployeeDto employeeDto) {
         return toEntity(employeeDto,null);
     }
 
-    public Employee toEntity(EmployeeDto employeeDto, @Nullable Employee existing ) {
+    public static Employee toEntity(EmployeeDto employeeDto, @Nullable Employee existing ) {
         var builder = Employee.builder();
 
         if(existing != null) {
@@ -35,7 +33,7 @@ public class EmployeeConverter {
                 .build();
     }
 
-    public EmployeeResponseDto toResponseDto(Employee employee) {
+    public static EmployeeResponseDto toResponseDto(Employee employee) {
         return EmployeeResponseDto.builder()
                 .id(employee.getId())
                 .firstName(employee.getFirstName())
@@ -45,9 +43,9 @@ public class EmployeeConverter {
                 .build();
     }
 
-    public List<EmployeeResponseDto> toDtoList(List<Employee> employees) {
+    public static List<EmployeeResponseDto> toDtoList(List<Employee> employees) {
         return employees.stream()
-                .map(this::toResponseDto)
+                .map(EmployeeConverter::toResponseDto)
                 .collect(Collectors.toList());
     }
 }

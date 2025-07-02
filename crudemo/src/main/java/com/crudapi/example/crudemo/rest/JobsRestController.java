@@ -20,27 +20,26 @@ public class JobsRestController {
 
 
     private final JobsService jobsService;
-    private final JobConverter jobConverter;
 
 
     @GetMapping("jobs")
     public List<JobResponseDto> findAll() {
 
-        return jobConverter.toDtoList(jobsService.findAll());
+        return JobConverter.toDtoList(jobsService.findAll());
 
     }
 
     @GetMapping("jobs/{jobId}")
     public JobResponseDto findById(@PathVariable int jobId) {
 
-      return jobConverter.toResponseDto(jobsService.findById(jobId).get());
+      return JobConverter.toResponseDto(jobsService.findById(jobId).get());
 
     }
 
     @PostMapping("jobs")
     public JobResponseDto addJob(@RequestBody Jobs theJob) {
 
-        return jobConverter.toResponseDto(jobsService.save(theJob));
+        return JobConverter.toResponseDto(jobsService.save(theJob));
 
     }
 
@@ -48,7 +47,7 @@ public class JobsRestController {
     @PutMapping("/jobs/{jobsId}")
     public void updateJob(@PathVariable int jobsId, @RequestBody JobDto theJob) {
         Jobs job = jobsService.findById(jobsId).get();
-        Jobs jobtoUpdate=jobConverter.toEntity(theJob,job);
+        Jobs jobtoUpdate=JobConverter.toEntity(theJob,job);
         jobsService.save(jobtoUpdate);
     }
 
