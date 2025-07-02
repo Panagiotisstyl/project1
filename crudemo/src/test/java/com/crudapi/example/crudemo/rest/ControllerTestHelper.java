@@ -58,7 +58,6 @@ public abstract class  ControllerTestHelper {
 
 
     public MvcResult performGet(String url) throws Exception {
-
         return mockMvc.perform(get(url))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))

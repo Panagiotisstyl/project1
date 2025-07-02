@@ -4,7 +4,9 @@ import com.crudapi.example.crudemo.converter.EmployeeConverter;
 import com.crudapi.example.crudemo.dtos.EmployeeDto;
 import com.crudapi.example.crudemo.dtos.EmployeeResponseDto;
 import com.crudapi.example.crudemo.entity.Employee;
+import com.crudapi.example.crudemo.entity.Evaluation;
 import com.crudapi.example.crudemo.service.EmployeeService;
+import com.crudapi.example.crudemo.service.EvaluationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -43,6 +45,8 @@ public class EmployeeRestController {
     }
 
 
+    //TODO: There is a way when you call the repository.deleteById method, it can return you something that you can understand that it actually deleted something or not. And then throw the exception that the employee was not found
+    //TODO: instead of returning String return Void
     @DeleteMapping("/employees/{employeeId}")
     public String deleteEmployee(@PathVariable int employeeId) {
 

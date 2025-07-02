@@ -133,7 +133,7 @@ public class EvaluationRestControllerTest extends ControllerTestHelper{
                 evaluationConverter.toResponseDto(ev1), evaluationConverter.toResponseDto(ev2)
         );
 
-        var result=performGet("/api/v1/evaluation/byscore");
+        var result=performGet("/api/v1/evaluation/byscore", null);
 
         List<EvaluationResponseDto> expectedEval =readingValue(result,new TypeReference<List<EvaluationResponseDto>>() {});
 

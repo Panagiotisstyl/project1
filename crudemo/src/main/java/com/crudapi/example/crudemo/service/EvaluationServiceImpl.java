@@ -16,43 +16,34 @@ public class EvaluationServiceImpl implements EvaluationService {
 
     private EvaluationRepository evaluationRepository;
 
-    @Autowired
+    @Autowired //TODO remove this constructor
     public EvaluationServiceImpl(EvaluationRepository evaluationRepository, EmployeeRepository employeeRepository, JobsRepository jobsRepository) {
         this.evaluationRepository = evaluationRepository;
     }
 
     @Override
     public List<Evaluation> findAll() {
-
         return evaluationRepository.findAll();
-
     }
 
     @Override
     public Optional<Evaluation> findById(int theId) {
-
         return evaluationRepository.findById(theId);
-
     }
 
     @Override
     public Evaluation save(Evaluation theEvaluation) {
-
         return evaluationRepository.save(theEvaluation);
-
     }
 
     @Override
     public void deleteById(int id) {
-
         evaluationRepository.deleteById(id);
-
     }
 
     @Override
     public List<Evaluation> findByEvaluationScore() {
         return evaluationRepository.findAll(Sort.by(Sort.Direction.DESC, "score"));
-
     }
 
 
@@ -63,10 +54,7 @@ public class EvaluationServiceImpl implements EvaluationService {
 
     @Override
     public Evaluation createEvaluation(Evaluation evaluation) {
-
         return evaluationRepository.save(evaluation);
-
-
     }
 
 

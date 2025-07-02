@@ -9,7 +9,7 @@ import java.util.Optional;
 
 public interface EvaluationService {
     List<Evaluation> findAll();
-    Optional<Evaluation> findById(int theId);
+    Optional<Evaluation> findById(int theId); //TODO: you have this method twice
     Evaluation save(Evaluation theEvaluation);
     void deleteById(int id);
     List<Evaluation> findByEvaluationScore();

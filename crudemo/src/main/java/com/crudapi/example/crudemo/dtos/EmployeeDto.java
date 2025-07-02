@@ -10,6 +10,6 @@ public class EmployeeDto {
     private String firstName;
     private String lastName;
     private String email;
-    private String dateJoined;
+    private String dateJoined; //TODO: change this to LocalDate
 
 }

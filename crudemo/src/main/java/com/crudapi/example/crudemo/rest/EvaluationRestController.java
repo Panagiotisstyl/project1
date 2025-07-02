@@ -29,7 +29,6 @@ public class EvaluationRestController {
 
     @GetMapping("/evaluation/{evaluationId}")
     public EvaluationResponseDto findById(@PathVariable int evaluationId) {
-
        return evaluationConverter.toResponseDto(evaluationService.getEvaluationById(evaluationId));
 
     }
@@ -48,6 +47,7 @@ public class EvaluationRestController {
 
     @DeleteMapping("/evaluation/{evaluationId}")
     public String deleteEvaluation(@PathVariable int evaluationId) {
+        //TODO: change this just like Employee
 
         Optional<Evaluation> evaluation = evaluationService.findById(evaluationId);
         if(evaluation.isEmpty()){
@@ -60,6 +60,7 @@ public class EvaluationRestController {
         return "Evaluation with id " + evaluationId + " deleted";
     }
 
+    //TODO: you dont need a second API. use the findAll API but enhance it to accept SortDirection and Sort Attribute
     @GetMapping("/evaluation/byscore")
     public List<EvaluationResponseDto> getByScore() {
         return evaluationConverter.toDtoList(evaluationService.findByEvaluationScore());

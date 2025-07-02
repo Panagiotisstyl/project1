@@ -24,6 +24,7 @@ public class EmployeeServiceImpl implements EmployeeService {
         return employeeRepository.findAll();
     }
 
+    //TODO: make this method return Employee and not Optional<Employee> (hint u can throw exception from optional)
     @Override
     public Optional<Employee> findById(int theId) {
 

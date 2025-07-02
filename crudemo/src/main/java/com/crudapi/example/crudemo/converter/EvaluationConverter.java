@@ -17,9 +17,9 @@ import java.util.stream.Collectors;
 @Component
 public class EvaluationConverter {
 
-    @Autowired
+    @Autowired //TODO: remove autowired, make it final, have service here instead of repository class
   private  EmployeeRepository employeeRepository;
-    @Autowired
+    @Autowired //TODO: remove autowired, make it final, have service here instead of repository class
   private  JobsRepository jobsRepository;
 
     public Evaluation toEntity(EvaluationDto evaluationDto) {
