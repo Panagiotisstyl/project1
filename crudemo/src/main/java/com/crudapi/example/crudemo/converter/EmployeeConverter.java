@@ -5,11 +5,13 @@ import com.crudapi.example.crudemo.dtos.EmployeeResponseDto;
 import com.crudapi.example.crudemo.entity.Employee;
 import com.crudapi.example.crudemo.utilites.DateUtil;
 import jakarta.annotation.Nullable;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
-//TODO: add private No argument constructor
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class EmployeeConverter {
 
 
@@ -23,8 +25,6 @@ public class EmployeeConverter {
         if(existing != null) {
             builder.id(existing.getId());
         }
-
-        DateUtil.validateDateFormat(employeeDto.getDateJoined());
 
         return builder
                 .firstName(employeeDto.getFirstName())

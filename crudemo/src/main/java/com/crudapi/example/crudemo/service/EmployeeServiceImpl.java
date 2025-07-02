@@ -2,13 +2,10 @@ package com.crudapi.example.crudemo.service;
 
 import com.crudapi.example.crudemo.dao.EmployeeRepository;
 import com.crudapi.example.crudemo.entity.Employee;
-import com.crudapi.example.crudemo.utilites.DateUtil;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @RequiredArgsConstructor
 @Service
@@ -26,9 +23,9 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     //TODO: make this method return Employee and not Optional<Employee> (hint u can throw exception from optional)
     @Override
-    public Optional<Employee> findById(int theId) {
+    public Employee findById(int theId) {
 
-       return employeeRepository.findById(theId);
+       return employeeRepository.findById(theId).orElseThrow(()->new RuntimeException("Employee not found"));
 
     }
 

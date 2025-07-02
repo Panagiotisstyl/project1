@@ -1,6 +1,5 @@
 package com.crudapi.example.crudemo.dtos;
 
-import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 

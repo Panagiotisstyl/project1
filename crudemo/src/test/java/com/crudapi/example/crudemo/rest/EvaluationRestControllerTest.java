@@ -39,7 +39,7 @@ public class EvaluationRestControllerTest extends ControllerTestHelper{
 
         assertThat(returnedEvaluation.getEmployeeId()).isEqualTo(evaluationDto.getEmployeeId());
         assertThat(returnedEvaluation.getJobId()).isEqualTo(evaluationDto.getJobId());
-        assertThat(returnedEvaluation.getYears_of_empl()).isEqualTo(evaluationDto.getYears_of_empl());
+        assertThat(returnedEvaluation.getYearsOfEmpl()).isEqualTo(evaluationDto.getYearsOfEmpl());
         assertThat(returnedEvaluation.getScore()).isEqualTo(evaluationDto.getScore());
 
         assertThat(evaluationRepository.findAll()).hasSize(1);
@@ -69,7 +69,7 @@ public class EvaluationRestControllerTest extends ControllerTestHelper{
             assertThat(actualEvali.getId()).isEqualTo(expectedEvali.getId());
             assertThat(actualEvali.getEmployeeId()).isEqualTo(expectedEvali.getEmployeeId());
             assertThat(actualEvali.getJobId()).isEqualTo(expectedEvali.getJobId());
-            assertThat(actualEvali.getYears_of_empl()).isEqualTo(expectedEvali.getYears_of_empl());
+            assertThat(actualEvali.getYearsOfEmpl()).isEqualTo(expectedEvali.getYearsOfEmpl());
             assertThat(actualEvali.getScore()).isEqualTo(expectedEvali.getScore());
         }
 
@@ -87,7 +87,7 @@ public class EvaluationRestControllerTest extends ControllerTestHelper{
        assertThat(returnedEval.getEmployeeId()).isEqualTo(ev1.getEmployee().getId());
        assertThat(returnedEval.getJobId()).isEqualTo(ev1.getJob().getId());
        assertThat(returnedEval.getScore()).isEqualTo(ev1.getScore());
-       assertThat(returnedEval.getYears_of_empl()).isEqualTo(ev1.getYears_of_Empl());
+       assertThat(returnedEval.getYearsOfEmpl()).isEqualTo(ev1.getYearsOfEmpl());
 
     }
 
@@ -108,7 +108,7 @@ public class EvaluationRestControllerTest extends ControllerTestHelper{
         assertThat(eval.getEmployee().getId()).isEqualTo(evalDto.getEmployeeId());
         assertThat(eval.getJob().getId()).isEqualTo(evalDto.getJobId());
         assertThat(eval.getScore()).isEqualTo(evalDto.getScore());
-        assertThat(eval.getYears_of_Empl()).isEqualTo(evalDto.getYears_of_empl());
+        assertThat(eval.getYearsOfEmpl()).isEqualTo(evalDto.getYearsOfEmpl());
 
     }
 
@@ -123,20 +123,5 @@ public class EvaluationRestControllerTest extends ControllerTestHelper{
 
     }
 
-    @Test
-    public void testGetByScore() throws Exception {
 
-        Evaluation ev1=evaluationRepository.save(evaluationFactory.createEvaluation(1,1));
-        Evaluation ev2=evaluationRepository.save(evaluationFactory.createEvaluation(2,2));
-
-        List<EvaluationResponseDto> actualEval=List.of(
-                evaluationConverter.toResponseDto(ev1), evaluationConverter.toResponseDto(ev2)
-        );
-
-        var result=performGet("/api/v1/evaluation/byscore", null);
-
-        List<EvaluationResponseDto> expectedEval =readingValue(result,new TypeReference<List<EvaluationResponseDto>>() {});
-
-        assertThat(expectedEval.get(0).getScore()).isEqualTo(actualEval.get(1).getScore());
-    }
 }

@@ -1,7 +1,10 @@
 package com.crudapi.example.crudemo.dtos;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Builder;
 import lombok.Getter;
+
+import java.time.LocalDate;
 
 @Getter
 @Builder
@@ -10,6 +13,7 @@ public class EmployeeDto {
     private String firstName;
     private String lastName;
     private String email;
-    private String dateJoined; //TODO: change this to LocalDate
+    @JsonFormat(pattern="dd-MM-yyyy")
+    private LocalDate dateJoined; //TODO: change this to LocalDate
 
 }

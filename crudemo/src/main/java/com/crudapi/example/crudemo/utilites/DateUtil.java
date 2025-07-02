@@ -23,10 +23,8 @@ public class DateUtil {
 
     }
 
-    public static Long toEpoch(String dateString) {
+    public static Long toEpoch(LocalDate date) {
 
-
-        LocalDate date = LocalDate.parse(dateString, formatter);
 
         return date.atStartOfDay(ZoneId.systemDefault()).toEpochSecond();
 

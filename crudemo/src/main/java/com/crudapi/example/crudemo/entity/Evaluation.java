@@ -26,8 +26,8 @@ public class Evaluation {
     @JoinColumn(name="job_id")
     private Jobs job;
 
-    @Column(name="years_of_empl")
-    private int years_of_Empl; //TODO: change name
+    @Column(name="yearsOfEmpl")
+    private int yearsOfEmpl; //TODO: change name
 
     @Column(name="score")
     private int score;
@@ -39,7 +39,7 @@ public class Evaluation {
                 "id=" + id +
                 ", employeeId=" + employee.getId() +
                 ", jobId=" + job.getId() +
-                ", years_of_Empl=" + years_of_Empl +
+                ", yearsOfEmpl=" + yearsOfEmpl +
                 ", score=" + score +
                 '}';
     }

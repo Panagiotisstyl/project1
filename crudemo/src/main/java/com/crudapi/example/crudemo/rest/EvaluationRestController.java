@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.*;
 
 
 import java.util.List;
-import java.util.Optional;
 
 @RequiredArgsConstructor
 @RestController
@@ -23,8 +22,10 @@ public class EvaluationRestController {
 
 
     @GetMapping("/evaluation")
-    public List<EvaluationResponseDto> findAll() {
-        return evaluationConverter.toDtoList(evaluationService.findAll());
+    public List<EvaluationResponseDto> findAll(@RequestParam(defaultValue="id") String sortBy, @RequestParam(defaultValue = "ASC") String direction) {
+
+        return evaluationConverter.toDtoList(evaluationService.findAll(sortBy, direction));
+
     }
 
     @GetMapping("/evaluation/{evaluationId}")
@@ -40,29 +41,17 @@ public class EvaluationRestController {
 
     @PutMapping("/evaluation/{evaluationId}")
     public void updateEvaluation(@PathVariable int evaluationId, @RequestBody EvaluationDto dto) {
-        Evaluation em=evaluationService.findById(evaluationId).get();
+        Evaluation em=evaluationService.getEvaluationById(evaluationId);
         Evaluation emupdted=evaluationConverter.toEntity(dto,em);
         evaluationService.save(emupdted);
     }
 
     @DeleteMapping("/evaluation/{evaluationId}")
-    public String deleteEvaluation(@PathVariable int evaluationId) {
+    public void deleteEvaluation(@PathVariable int evaluationId) {
         //TODO: change this just like Employee
-
-        Optional<Evaluation> evaluation = evaluationService.findById(evaluationId);
-        if(evaluation.isEmpty()){
-
-            throw new RuntimeException("Evaluation not found with id " + evaluationId);
-        }
-
         evaluationService.deleteById(evaluationId);
 
-        return "Evaluation with id " + evaluationId + " deleted";
     }
 
-    //TODO: you dont need a second API. use the findAll API but enhance it to accept SortDirection and Sort Attribute
-    @GetMapping("/evaluation/byscore")
-    public List<EvaluationResponseDto> getByScore() {
-        return evaluationConverter.toDtoList(evaluationService.findByEvaluationScore());
-    }
+
 }

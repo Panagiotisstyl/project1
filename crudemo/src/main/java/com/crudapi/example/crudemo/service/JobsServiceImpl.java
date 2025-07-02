@@ -2,21 +2,18 @@ package com.crudapi.example.crudemo.service;
 
 import com.crudapi.example.crudemo.dao.JobsRepository;
 import com.crudapi.example.crudemo.entity.Jobs;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
+@RequiredArgsConstructor
 @Service
 public class JobsServiceImpl implements JobsService {
 
-    private JobsRepository jobRepository;
+    private final JobsRepository jobRepository;
 
-    @Autowired
-    public JobsServiceImpl(JobsRepository jobRepository) {
-        this.jobRepository = jobRepository;
-    }
 
     @Override
     public List<Jobs> findAll() {
@@ -26,9 +23,9 @@ public class JobsServiceImpl implements JobsService {
     }
 
     @Override
-    public Optional<Jobs> findById(int theId) {
+    public Jobs findById(int theId) {
 
-        return jobRepository.findById(theId);
+        return jobRepository.findById(theId).orElseThrow(()->new RuntimeException("Job not found"));
 
     }
 

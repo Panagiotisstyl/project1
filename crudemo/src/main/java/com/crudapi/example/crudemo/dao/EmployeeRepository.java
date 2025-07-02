@@ -4,7 +4,7 @@ import com.crudapi.example.crudemo.entity.Employee;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-//TODO: give repository annotation
+@Repository
 public interface EmployeeRepository extends JpaRepository<Employee, Integer> {
 
 }

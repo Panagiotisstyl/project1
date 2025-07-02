@@ -1,26 +1,26 @@
 package com.crudapi.example.crudemo.converter;
 
-import com.crudapi.example.crudemo.dao.EmployeeRepository;
-import com.crudapi.example.crudemo.dao.JobsRepository;
 import com.crudapi.example.crudemo.dtos.EvaluationDto;
 import com.crudapi.example.crudemo.dtos.EvaluationResponseDto;
-import com.crudapi.example.crudemo.entity.Employee;
 import com.crudapi.example.crudemo.entity.Evaluation;
-import com.crudapi.example.crudemo.entity.Jobs;
+import com.crudapi.example.crudemo.service.EmployeeService;
+import com.crudapi.example.crudemo.service.JobsService;
 import jakarta.annotation.Nullable;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
+@RequiredArgsConstructor
 @Component
 public class EvaluationConverter {
 
-    @Autowired //TODO: remove autowired, make it final, have service here instead of repository class
-  private  EmployeeRepository employeeRepository;
-    @Autowired //TODO: remove autowired, make it final, have service here instead of repository class
-  private  JobsRepository jobsRepository;
+     //TODO: remove autowired, make it final, have service here instead of repository class
+    private  final EmployeeService employeeService;
+
+    //TODO: remove autowired, make it final, have service here instead of repository class
+    private final JobsService jobsService;
 
     public Evaluation toEntity(EvaluationDto evaluationDto) {
         return toEntity(evaluationDto, null);
@@ -33,15 +33,11 @@ public class EvaluationConverter {
             builder.id(existing.getId());
         }
 
-        Employee em=employeeRepository.findById(dto.getEmployeeId()).orElseThrow(()->new RuntimeException("Employee not found"));
-
-        Jobs job=jobsRepository.findById(dto.getJobId()).orElseThrow(()->new RuntimeException("Job not found"));
-
         return builder
-                .employee(em)
-                .job(job)
+                .employee(employeeService.findById(dto.getEmployeeId()))
+                .job(jobsService.findById(dto.getJobId()))
                 .score(dto.getScore())
-                .years_of_Empl(dto.getYears_of_empl()).build();
+                .yearsOfEmpl(dto.getYearsOfEmpl()).build();
 
     }
 
@@ -50,7 +46,7 @@ public class EvaluationConverter {
                 .id(entity.getId())
                 .employeeId(entity.getEmployee().getId())
                 .jobId(entity.getJob().getId())
-                .years_of_empl(entity.getYears_of_Empl())
+                .yearsOfEmpl(entity.getYearsOfEmpl())
                 .score(entity.getScore()).build();
     }
 

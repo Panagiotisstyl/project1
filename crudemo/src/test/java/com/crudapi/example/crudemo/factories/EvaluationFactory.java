@@ -20,7 +20,7 @@ public class EvaluationFactory {
             return Evaluation.builder()
                     .employee(employeeRepository.save(EmployeeFactory.createEmployee("Pan","Styl")))
                     .job(jobsRepository.save(JobFactory.createJob("Job1")))
-                    .years_of_Empl(yearsOfEmpl)
+                    .yearsOfEmpl(yearsOfEmpl)
                     .score(score)
                     .build();
 
@@ -32,7 +32,7 @@ public class EvaluationFactory {
                 .employeeId(employeeRepository.save(EmployeeFactory.createEmployee("Pan","Styl")).getId())
                 .jobId(jobsRepository.save(JobFactory.createJob("Job1")).getId())
                 .score(score)
-                .years_of_empl(yearsOfEmpl)
+                .yearsOfEmpl(yearsOfEmpl)
                 .build();
 
     }

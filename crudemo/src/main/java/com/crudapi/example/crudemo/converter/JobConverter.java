@@ -5,10 +5,13 @@ import com.crudapi.example.crudemo.dtos.JobDto;
 import com.crudapi.example.crudemo.dtos.JobResponseDto;
 import com.crudapi.example.crudemo.entity.Jobs;
 import jakarta.annotation.Nullable;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class JobConverter {
 
     public static Jobs toEntity(JobDto jobDto){

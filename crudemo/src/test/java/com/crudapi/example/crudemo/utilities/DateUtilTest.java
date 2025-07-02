@@ -32,7 +32,7 @@ public class DateUtilTest {
     @Test
     public void toEpochTest() throws Exception {
 
-        long expected_epoch=DateUtil.toEpoch("01-07-2025");//date today epoch will be the first 00:00:00
+        long expected_epoch=DateUtil.toEpoch(LocalDate.parse("01-07-2025",formatter));//date today epoch will be the first 00:00:00
 
         long actual_epoch=1751317200L;//give epoch at today's date, but at the very start(00:00:00)
 

@@ -1,7 +1,6 @@
 package com.crudapi.example.crudemo.rest;
 
 
-
 import com.crudapi.example.crudemo.converter.JobConverter;
 import com.crudapi.example.crudemo.dtos.JobDto;
 import com.crudapi.example.crudemo.dtos.JobResponseDto;
@@ -11,7 +10,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RequiredArgsConstructor
 @RestController
@@ -24,45 +22,30 @@ public class JobsRestController {
 
     @GetMapping("jobs")
     public List<JobResponseDto> findAll() {
-
         return JobConverter.toDtoList(jobsService.findAll());
-
     }
 
     @GetMapping("jobs/{jobId}")
     public JobResponseDto findById(@PathVariable int jobId) {
-
-      return JobConverter.toResponseDto(jobsService.findById(jobId).get());
-
+      return JobConverter.toResponseDto(jobsService.findById(jobId));
     }
 
     @PostMapping("jobs")
     public JobResponseDto addJob(@RequestBody Jobs theJob) {
-
         return JobConverter.toResponseDto(jobsService.save(theJob));
-
     }
 
 
     @PutMapping("/jobs/{jobsId}")
     public void updateJob(@PathVariable int jobsId, @RequestBody JobDto theJob) {
-        Jobs job = jobsService.findById(jobsId).get();
+        Jobs job = jobsService.findById(jobsId);
         Jobs jobtoUpdate=JobConverter.toEntity(theJob,job);
         jobsService.save(jobtoUpdate);
     }
 
     @DeleteMapping("/jobs/{jobsId}")
-    public String deleteJob(@PathVariable int jobsId) {
-
-        Optional<Jobs> job = jobsService.findById(jobsId);
-
-
-        if(job.isEmpty()) {
-            throw new RuntimeException("Job id not found - " + jobsId);
-        }
-
+    public void deleteJob(@PathVariable int jobsId) {
+        jobsService.findById(jobsId);
         jobsService.deleteById(jobsId);
-
-        return "Deleted job id: " + jobsId;
     }
 }

@@ -9,7 +9,7 @@ import java.util.Optional;
 public interface JobsService {
 
     List<Jobs> findAll();
-    Optional<Jobs> findById(int theId);
+    Jobs findById(int theId);
     Jobs save(Jobs theJob);
     void deleteById(int theId);
 

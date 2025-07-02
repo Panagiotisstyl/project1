@@ -1,34 +1,39 @@
 package com.crudapi.example.crudemo.service;
 
-import com.crudapi.example.crudemo.dao.EmployeeRepository;
 import com.crudapi.example.crudemo.dao.EvaluationRepository;
-import com.crudapi.example.crudemo.dao.JobsRepository;
 import com.crudapi.example.crudemo.entity.Evaluation;
-import org.springframework.beans.factory.annotation.Autowired;
+import jakarta.annotation.Nullable;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
+@RequiredArgsConstructor
 @Service
 public class EvaluationServiceImpl implements EvaluationService {
 
-    private EvaluationRepository evaluationRepository;
+    private final EvaluationRepository evaluationRepository;
 
-    @Autowired //TODO remove this constructor
-    public EvaluationServiceImpl(EvaluationRepository evaluationRepository, EmployeeRepository employeeRepository, JobsRepository jobsRepository) {
-        this.evaluationRepository = evaluationRepository;
-    }
 
     @Override
-    public List<Evaluation> findAll() {
-        return evaluationRepository.findAll();
-    }
+    public List<Evaluation> findAll(String sortBy, String direction) {
 
-    @Override
-    public Optional<Evaluation> findById(int theId) {
-        return evaluationRepository.findById(theId);
+        List<String> allowedFields=List.of("score","yearsOfEmpl","id");
+        if(!allowedFields.contains(sortBy)){
+            throw new IllegalArgumentException("sort is not allowed");
+        }
+
+        Sort.Direction sortDirection;
+
+        try{
+            sortDirection = Sort.Direction.valueOf(direction.toUpperCase());
+        }
+        catch(IllegalArgumentException e){
+            throw new IllegalArgumentException("direction is not allowed");
+        }
+
+        return evaluationRepository.findAll(Sort.by(sortDirection,sortBy));
     }
 
     @Override
@@ -42,19 +47,9 @@ public class EvaluationServiceImpl implements EvaluationService {
     }
 
     @Override
-    public List<Evaluation> findByEvaluationScore() {
-        return evaluationRepository.findAll(Sort.by(Sort.Direction.DESC, "score"));
-    }
-
-
-    @Override
     public Evaluation getEvaluationById(int theId) {
-        return evaluationRepository.findById(theId).orElseThrow(() -> new RuntimeException("Evaluation not found with id " + theId));
-    }
 
-    @Override
-    public Evaluation createEvaluation(Evaluation evaluation) {
-        return evaluationRepository.save(evaluation);
+        return evaluationRepository.findById(theId).orElseThrow(() -> new RuntimeException("Evaluation not found"));
     }
 
 
