@@ -2,21 +2,20 @@ package com.crudapi.example.crudemo.service;
 
 import com.crudapi.example.crudemo.dao.EmployeeRepository;
 import com.crudapi.example.crudemo.entity.Employee;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
+@RequiredArgsConstructor
 @Service
 public class EmployeeServiceImpl implements EmployeeService {
 
-    private EmployeeRepository employeeRepository;
 
-    @Autowired
-    public EmployeeServiceImpl(EmployeeRepository employeeRepository) {
-        this.employeeRepository = employeeRepository;
-    }
+    private final EmployeeRepository employeeRepository;
+
+
     @Override
     public List<Employee> findAll() {
 
@@ -24,9 +23,9 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    public Optional<Employee> findById(int theId) {
+    public Employee findById(int Id) {
 
-       return employeeRepository.findById(theId);
+       return employeeRepository.findById(Id).orElseThrow(()->new RuntimeException("Employee not found"));
 
     }
 
@@ -36,8 +35,15 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    public void deleteById(int theId) {
-        employeeRepository.deleteById(theId);
+    public boolean deleteById(int Id) {
+
+        try{
+            employeeRepository.deleteById(Id);
+            return true;
+        }
+        catch(EmptyResultDataAccessException e){
+            return false;
+        }
     }
 
 }

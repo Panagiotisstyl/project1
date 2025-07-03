@@ -10,7 +10,6 @@ import lombok.*;
 @Getter
 @NoArgsConstructor
 @Entity
-@ToString
 @Table(name="evaluation")
 public class Evaluation {
 
@@ -19,20 +18,29 @@ public class Evaluation {
     @Id
     private int id;
 
-    @OneToOne(cascade=CascadeType.ALL)
+    @OneToOne
     @JoinColumn(name="employee_id")
     private Employee employee;
 
-    @OneToOne(cascade=CascadeType.ALL)
+    @OneToOne
     @JoinColumn(name="job_id")
     private Jobs job;
 
-    @Column(name="years_of_empl")
-    private int years_of_Empl;
+    @Column(name="yearsOfEmpl")
+    private int yearsOfEmpl;
 
     @Column(name="score")
     private int score;
 
 
-
+    @Override
+    public String toString() {
+        return "Evaluation{" +
+                "id=" + id +
+                ", employeeId=" + employee.getId() +
+                ", jobId=" + job.getId() +
+                ", yearsOfEmpl=" + yearsOfEmpl +
+                ", score=" + score +
+                '}';
+    }
 }

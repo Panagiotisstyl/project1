@@ -3,16 +3,13 @@ package com.crudapi.example.crudemo.rest;
 import com.crudapi.example.crudemo.converter.EvaluationConverter;
 import com.crudapi.example.crudemo.dtos.EvaluationDto;
 import com.crudapi.example.crudemo.dtos.EvaluationResponseDto;
-import com.crudapi.example.crudemo.entity.Employee;
 import com.crudapi.example.crudemo.entity.Evaluation;
 import com.crudapi.example.crudemo.service.EvaluationService;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
+
 import java.util.List;
-import java.util.Optional;
 
 @RequiredArgsConstructor
 @RestController
@@ -25,13 +22,14 @@ public class EvaluationRestController {
 
 
     @GetMapping("/evaluation")
-    public List<EvaluationResponseDto> findAll() {
-        return evaluationConverter.toDtoList(evaluationService.findAll());
+    public List<EvaluationResponseDto> findAll(@RequestParam(defaultValue="id") String sortBy, @RequestParam(defaultValue = "ASC") String direction) {
+
+        return evaluationConverter.toDtoList(evaluationService.findAll(sortBy, direction));
+
     }
 
     @GetMapping("/evaluation/{evaluationId}")
     public EvaluationResponseDto findById(@PathVariable int evaluationId) {
-
        return evaluationConverter.toResponseDto(evaluationService.getEvaluationById(evaluationId));
 
     }
@@ -43,27 +41,17 @@ public class EvaluationRestController {
 
     @PutMapping("/evaluation/{evaluationId}")
     public void updateEvaluation(@PathVariable int evaluationId, @RequestBody EvaluationDto dto) {
-        Evaluation em=evaluationService.findById(evaluationId).get();
+        Evaluation em=evaluationService.getEvaluationById(evaluationId);
         Evaluation emupdted=evaluationConverter.toEntity(dto,em);
         evaluationService.save(emupdted);
     }
 
     @DeleteMapping("/evaluation/{evaluationId}")
-    public String deleteEvaluation(@PathVariable int evaluationId) {
+    public void deleteEvaluation(@PathVariable int evaluationId) {
+        if(!evaluationService.deleteById(evaluationId))
+            throw new RuntimeException("Evaluation id not found");
 
-        Optional<Evaluation> evaluation = evaluationService.findById(evaluationId);
-        if(evaluation.isEmpty()){
-
-            throw new RuntimeException("Evaluation not found with id " + evaluationId);
-        }
-
-        evaluationService.deleteById(evaluationId);
-
-        return "Evaluation with id " + evaluationId + " deleted";
     }
 
-    @GetMapping("/evaluation/byscore")
-    public List<EvaluationResponseDto> getByScore() {
-        return evaluationConverter.toDtoList(evaluationService.findByEvaluationScore());
-    }
+
 }

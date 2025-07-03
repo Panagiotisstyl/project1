@@ -1,75 +1,60 @@
 package com.crudapi.example.crudemo.service;
 
-import com.crudapi.example.crudemo.dao.EmployeeRepository;
 import com.crudapi.example.crudemo.dao.EvaluationRepository;
-import com.crudapi.example.crudemo.dao.JobsRepository;
-import com.crudapi.example.crudemo.dtos.EvaluationDto;
-import com.crudapi.example.crudemo.dtos.EvaluationResponseDto;
 import com.crudapi.example.crudemo.entity.Evaluation;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
+@RequiredArgsConstructor
 @Service
 public class EvaluationServiceImpl implements EvaluationService {
 
-    private EvaluationRepository evaluationRepository;
+    private final EvaluationRepository evaluationRepository;
 
-    @Autowired
-    public EvaluationServiceImpl(EvaluationRepository evaluationRepository, EmployeeRepository employeeRepository, JobsRepository jobsRepository) {
-        this.evaluationRepository = evaluationRepository;
-    }
 
     @Override
-    public List<Evaluation> findAll() {
+    public List<Evaluation> findAll(String sortBy, String direction) {
 
-        return evaluationRepository.findAll();
+        List<String> allowedFields=List.of("score","yearsOfEmpl","id");
+        if(!allowedFields.contains(sortBy)){
+            throw new IllegalArgumentException("sort is not allowed");
+        }
 
-    }
+        Sort.Direction sortDirection;
 
-    @Override
-    public Optional<Evaluation> findById(int theId) {
+        try{
+            sortDirection = Sort.Direction.valueOf(direction.toUpperCase());
+        }
+        catch(IllegalArgumentException e){
+            throw new IllegalArgumentException("direction is not allowed");
+        }
 
-        return evaluationRepository.findById(theId);
-
+        return evaluationRepository.findAll(Sort.by(sortDirection,sortBy));
     }
 
     @Override
     public Evaluation save(Evaluation theEvaluation) {
-
         return evaluationRepository.save(theEvaluation);
-
     }
 
     @Override
-    public void deleteById(int id) {
-
-        evaluationRepository.deleteById(id);
-
+    public boolean deleteById(int id) {
+        try{
+            evaluationRepository.deleteById(id);
+            return true;
+        }catch(EmptyResultDataAccessException e){
+            return false;
+        }
     }
 
     @Override
-    public List<Evaluation> findByEvaluationScore() {
-        return evaluationRepository.findAll(Sort.by(Sort.Direction.DESC, "score"));
+    public Evaluation getEvaluationById(int Id) {
 
-    }
-
-
-    @Override
-    public Evaluation getEvaluationById(int theId) {
-        return evaluationRepository.findById(theId).orElseThrow(() -> new RuntimeException("Evaluation not found with id " + theId));
-    }
-
-    @Override
-    public Evaluation createEvaluation(Evaluation evaluation) {
-
-        return evaluationRepository.save(evaluation);
-
-
+        return evaluationRepository.findById(Id).orElseThrow(() -> new RuntimeException("Evaluation not found"));
     }
 
 
