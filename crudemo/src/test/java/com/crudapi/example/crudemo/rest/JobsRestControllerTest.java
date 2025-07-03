@@ -9,10 +9,15 @@ import com.crudapi.example.crudemo.factories.JobFactory;
 import com.fasterxml.jackson.core.type.TypeReference;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
 
 public class JobsRestControllerTest extends ControllerTestHelper{
@@ -86,6 +91,14 @@ public class JobsRestControllerTest extends ControllerTestHelper{
 
         assertThat(returnedjob.getJob_Desc()).isEqualTo(actualJob.getJob_Desc());
 
+        //HANDLING EXCEPTION
+
+        mockMvc.perform(get("/api/v1/jobs/1231"))
+                .andExpect(status().isNotFound())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.statusCode").value(404))
+                .andExpect(jsonPath("$.message").value("Job not found"));
+
     }
 
     @Test
@@ -107,11 +120,21 @@ public class JobsRestControllerTest extends ControllerTestHelper{
     @Test
     public void testDeleteJob()  throws Exception {
 
+        //SUCCESSFUL DELETION
+
         Jobs job=jobsRepository.save(JobFactory.createJob("BackEnd Engineer"));
 
         performDelete("/api/v1/jobs/"+job.getId());
 
         assertThat(jobsRepository.findById(job.getId())).isEmpty();
+
+        //THROWING EXCEPTION, HANDLER CATCHING IT
+
+        mockMvc.perform(delete("/api/v1/jobs/12"))
+                .andExpect(status().isNotFound())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.statusCode").value(404))
+                .andExpect(jsonPath("$.message").value("Job not found"));
 
     }
 

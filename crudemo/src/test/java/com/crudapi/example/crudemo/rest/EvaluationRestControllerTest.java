@@ -9,10 +9,14 @@ import com.crudapi.example.crudemo.factories.EvaluationFactory;
 import com.fasterxml.jackson.core.type.TypeReference;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
 public class EvaluationRestControllerTest extends ControllerTestHelper{
 
@@ -44,6 +48,24 @@ public class EvaluationRestControllerTest extends ControllerTestHelper{
 
         assertThat(evaluationRepository.findAll()).hasSize(1);
 
+        //INSERTING WRONG JOB ID
+        mockMvc.perform(post("/api/v1/evaluation")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(evaluationFactory.createEvaluationDtoWrongEmployeeId(2,2))))
+                .andExpect(status().isNotFound())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.statusCode").value(404))
+                .andExpect(jsonPath("$.message").value("Employee not found"));
+
+
+        //INSERTING WRONG EMPLOYEE ID
+        mockMvc.perform(post("/api/v1/evaluation")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(evaluationFactory.createEvaluationDtoWrongJobId(2,2))))
+                .andExpect(status().isNotFound())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.statusCode").value(404))
+                .andExpect(jsonPath("$.message").value("Job not found"));
     }
 
     @Test
@@ -81,6 +103,26 @@ public class EvaluationRestControllerTest extends ControllerTestHelper{
 
         assertThat(expectedEval2.getFirst().getScore()).isEqualTo(expectedEval.get(1).getScore());
 
+        //HANDLING ILLEGAL ARGUMENT EXCEPTION(sort)
+
+        mockMvc.perform(get("/api/v1/evaluation?sortBy=scoresda&direction=DESC"))
+                .andExpect(status().isBadRequest())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.statusCode").value(400))
+                .andExpect(jsonPath("$.message").value("sort is not allowed"));
+
+        //HANDLING ILLEGAL ARGUMENT EXCEPTION(direction)
+
+        mockMvc.perform(get("/api/v1/evaluation?sortBy=score&direction=asdad"))
+                .andExpect(status().isBadRequest())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.statusCode").value(400))
+                .andExpect(jsonPath("$.message").value("direction is not allowed"));
+
+
+
+
+
     }
 
     @Test
@@ -96,6 +138,15 @@ public class EvaluationRestControllerTest extends ControllerTestHelper{
        assertThat(returnedEval.getJobId()).isEqualTo(ev1.getJob().getId());
        assertThat(returnedEval.getScore()).isEqualTo(ev1.getScore());
        assertThat(returnedEval.getYearsOfEmpl()).isEqualTo(ev1.getYearsOfEmpl());
+
+
+       //HANDLING EXCEPTION, EVALUATION NOT FOUND
+        mockMvc.perform(get("/api/v1/evaluation/1"))
+                .andExpect(status().isNotFound())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.statusCode").value(404))
+                .andExpect(jsonPath("$.message").value("Evaluation not found"));
+
 
     }
 
@@ -123,11 +174,21 @@ public class EvaluationRestControllerTest extends ControllerTestHelper{
     @Test
     public void testDeleteEvaluation() throws Exception {
 
+        //SUCCESSFUL DELETION
+
         Evaluation ev1=evaluationRepository.save(evaluationFactory.createEvaluation(1,1));
 
         performDelete("/api/v1/evaluation/"+ev1.getId());
 
         assertThat(evaluationRepository.findById(ev1.getId())).isEmpty();
+
+        //THROWING EXCEPTION, HANDLER CATCHING IT
+
+        mockMvc.perform(delete("/api/v1/evaluation/12"))
+                .andExpect(status().isNotFound())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.statusCode").value(404))
+                .andExpect(jsonPath("$.message").value("Evaluation not found"));
 
     }
 

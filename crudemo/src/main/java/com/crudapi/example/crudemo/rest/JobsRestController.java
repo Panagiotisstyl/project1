@@ -7,6 +7,7 @@ import com.crudapi.example.crudemo.dtos.JobResponseDto;
 import com.crudapi.example.crudemo.entity.Jobs;
 import com.crudapi.example.crudemo.service.JobsService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -44,6 +45,7 @@ public class JobsRestController {
     }
 
     @DeleteMapping("/jobs/{jobsId}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteJob(@PathVariable int jobsId) {
 
         if(!jobsService.deleteById(jobsId))

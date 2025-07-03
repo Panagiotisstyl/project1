@@ -26,6 +26,8 @@ public class EvaluationFactory {
 
     }
 
+
+
     public EvaluationDto createEvaluationDto(int score, int yearsOfEmpl){
 
         return EvaluationDto.builder()
@@ -36,4 +38,26 @@ public class EvaluationFactory {
                 .build();
 
     }
+
+    public EvaluationDto createEvaluationDtoWrongEmployeeId(int score, int yearsOfEmpl){
+
+        return EvaluationDto.builder()
+                .employeeId(1230)
+                .jobId(jobsRepository.save(JobFactory.createJob("Job1")).getId())
+                .score(score)
+                .yearsOfEmpl(yearsOfEmpl)
+                .build();
+
+    }
+    public EvaluationDto createEvaluationDtoWrongJobId(int score, int yearsOfEmpl){
+
+        return EvaluationDto.builder()
+                .employeeId(employeeRepository.save(EmployeeFactory.createEmployee("Pan","Styl")).getId())
+                .jobId(1230)
+                .score(score)
+                .yearsOfEmpl(yearsOfEmpl)
+                .build();
+
+    }
+
 }
