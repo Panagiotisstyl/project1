@@ -49,7 +49,7 @@ public class EvaluationRestController {
     @DeleteMapping("/evaluation/{evaluationId}")
     public void deleteEvaluation(@PathVariable int evaluationId) {
         if(!evaluationService.deleteById(evaluationId))
-            throw new RuntimeException("Evaluation id not found");
+            throw new RuntimeException("Evaluation not found");
 
     }
 
