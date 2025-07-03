@@ -52,9 +52,9 @@ public class EvaluationRestControllerTest extends ControllerTestHelper{
         mockMvc.perform(post("/api/v1/evaluation")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(evaluationFactory.createEvaluationDtoWrongEmployeeId(2,2))))
-                .andExpect(status().isNotFound())
+                .andExpect(status().isBadRequest())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.statusCode").value(404))
+                .andExpect(jsonPath("$.statusCode").value(400))
                 .andExpect(jsonPath("$.message").value("Employee not found"));
 
 
@@ -62,9 +62,9 @@ public class EvaluationRestControllerTest extends ControllerTestHelper{
         mockMvc.perform(post("/api/v1/evaluation")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(evaluationFactory.createEvaluationDtoWrongJobId(2,2))))
-                .andExpect(status().isNotFound())
+                .andExpect(status().isBadRequest())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.statusCode").value(404))
+                .andExpect(jsonPath("$.statusCode").value(400))
                 .andExpect(jsonPath("$.message").value("Job not found"));
     }
 
@@ -142,9 +142,9 @@ public class EvaluationRestControllerTest extends ControllerTestHelper{
 
        //HANDLING EXCEPTION, EVALUATION NOT FOUND
         mockMvc.perform(get("/api/v1/evaluation/1"))
-                .andExpect(status().isNotFound())
+                .andExpect(status().isBadRequest())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.statusCode").value(404))
+                .andExpect(jsonPath("$.statusCode").value(400))
                 .andExpect(jsonPath("$.message").value("Evaluation not found"));
 
 
@@ -185,9 +185,9 @@ public class EvaluationRestControllerTest extends ControllerTestHelper{
         //THROWING EXCEPTION, HANDLER CATCHING IT
 
         mockMvc.perform(delete("/api/v1/evaluation/12"))
-                .andExpect(status().isNotFound())
+                .andExpect(status().isBadRequest())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.statusCode").value(404))
+                .andExpect(jsonPath("$.statusCode").value(400))
                 .andExpect(jsonPath("$.message").value("Evaluation not found"));
 
     }

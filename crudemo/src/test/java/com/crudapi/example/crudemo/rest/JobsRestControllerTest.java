@@ -94,9 +94,9 @@ public class JobsRestControllerTest extends ControllerTestHelper{
         //HANDLING EXCEPTION
 
         mockMvc.perform(get("/api/v1/jobs/1231"))
-                .andExpect(status().isNotFound())
+                .andExpect(status().isBadRequest())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.statusCode").value(404))
+                .andExpect(jsonPath("$.statusCode").value(400))
                 .andExpect(jsonPath("$.message").value("Job not found"));
 
     }
@@ -131,9 +131,9 @@ public class JobsRestControllerTest extends ControllerTestHelper{
         //THROWING EXCEPTION, HANDLER CATCHING IT
 
         mockMvc.perform(delete("/api/v1/jobs/12"))
-                .andExpect(status().isNotFound())
+                .andExpect(status().isBadRequest())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.statusCode").value(404))
+                .andExpect(jsonPath("$.statusCode").value(400))
                 .andExpect(jsonPath("$.message").value("Job not found"));
 
     }
