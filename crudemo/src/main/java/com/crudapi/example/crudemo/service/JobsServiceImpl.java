@@ -23,9 +23,9 @@ public class JobsServiceImpl implements JobsService {
     }
 
     @Override
-    public Jobs findById(int theId) {
+    public Jobs findById(int Id) {
 
-        return jobRepository.findById(theId).orElseThrow(()->new RuntimeException("Job not found"));
+        return jobRepository.findById(Id).orElseThrow(()->new RuntimeException("Job not found"));
 
     }
 
@@ -37,10 +37,10 @@ public class JobsServiceImpl implements JobsService {
     }
 
     @Override
-    public boolean deleteById(int theId) {
+    public boolean deleteById(int Id) {
 
         try{
-            jobRepository.deleteById(theId);
+            jobRepository.deleteById(Id);
             return true;
         }catch(EmptyResultDataAccessException e){
             return false;

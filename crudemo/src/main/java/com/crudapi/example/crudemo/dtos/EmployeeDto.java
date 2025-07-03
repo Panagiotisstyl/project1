@@ -14,6 +14,6 @@ public class EmployeeDto {
     private String lastName;
     private String email;
     @JsonFormat(pattern="dd-MM-yyyy")
-    private LocalDate dateJoined; //TODO: change this to LocalDate
+    private LocalDate dateJoined;
 
 }

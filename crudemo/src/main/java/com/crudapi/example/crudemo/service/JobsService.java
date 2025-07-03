@@ -8,8 +8,8 @@ import java.util.List;
 public interface JobsService {
 
     List<Jobs> findAll();
-    Jobs findById(int theId);
+    Jobs findById(int Id);
     Jobs save(Jobs theJob);
-    boolean deleteById(int theId);
+    boolean deleteById(int Id);
 
 }

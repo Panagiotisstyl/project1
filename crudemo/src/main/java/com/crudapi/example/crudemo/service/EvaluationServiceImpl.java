@@ -52,9 +52,9 @@ public class EvaluationServiceImpl implements EvaluationService {
     }
 
     @Override
-    public Evaluation getEvaluationById(int theId) {
+    public Evaluation getEvaluationById(int Id) {
 
-        return evaluationRepository.findById(theId).orElseThrow(() -> new RuntimeException("Evaluation not found"));
+        return evaluationRepository.findById(Id).orElseThrow(() -> new RuntimeException("Evaluation not found"));
     }
 
 

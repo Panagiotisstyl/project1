@@ -9,6 +9,6 @@ public interface EvaluationService {
     List<Evaluation> findAll(String sortBy, String direction);
     Evaluation save(Evaluation theEvaluation);
     boolean deleteById(int id);
-    Evaluation getEvaluationById(int theId);
+    Evaluation getEvaluationById(int Id);
 
 }

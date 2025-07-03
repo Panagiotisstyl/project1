@@ -42,8 +42,6 @@ public class EmployeeRestController {
     }
 
 
-    //TODO: There is a way when you call the repository.deleteById method, it can return you something that you can understand that it actually deleted something or not. And then throw the exception that the employee was not found
-    //TODO: instead of returning String return Void
     @DeleteMapping("/employees/{employeeId}")
     public void deleteEmployee(@PathVariable int employeeId) {
         if(!employeeService.deleteById(employeeId))

@@ -1,16 +1,16 @@
 package com.crudapi.example.crudemo.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 
 @Getter
 @NoArgsConstructor
 @Entity
-@ToString(exclude = "evaluation")
+@ToString
 @Table(name="employee")
 public class Employee {
 
@@ -31,9 +31,6 @@ public class Employee {
     @Column(name="date_joined")
     private long dateJoined;
 
-   /* @JsonIgnore
-    @OneToOne(mappedBy="employee")
-    private Evaluation evaluation;*/
 
     @Builder
     public Employee(int id, String firstName, String lastName, String email, long dateJoined) {
@@ -42,6 +39,5 @@ public class Employee {
         this.lastName = lastName;
         this.email = email;
         this.dateJoined = dateJoined;
-       // this.evaluation = evaluation;
     }
 }

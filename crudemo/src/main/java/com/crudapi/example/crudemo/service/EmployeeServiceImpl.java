@@ -22,11 +22,10 @@ public class EmployeeServiceImpl implements EmployeeService {
         return employeeRepository.findAll();
     }
 
-    //TODO: make this method return Employee and not Optional<Employee> (hint u can throw exception from optional)
     @Override
-    public Employee findById(int theId) {
+    public Employee findById(int Id) {
 
-       return employeeRepository.findById(theId).orElseThrow(()->new RuntimeException("Employee not found"));
+       return employeeRepository.findById(Id).orElseThrow(()->new RuntimeException("Employee not found"));
 
     }
 
@@ -36,10 +35,10 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    public boolean deleteById(int theId) {
+    public boolean deleteById(int Id) {
 
         try{
-            employeeRepository.deleteById(theId);
+            employeeRepository.deleteById(Id);
             return true;
         }
         catch(EmptyResultDataAccessException e){

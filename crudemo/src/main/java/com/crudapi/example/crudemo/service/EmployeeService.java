@@ -7,7 +7,7 @@ import java.util.List;
 public interface EmployeeService {
 
     List<Employee> findAll();
-    Employee findById(int theId);
+    Employee findById(int Id);
     Employee save(Employee theEmployee);
-    boolean deleteById(int theId);
+    boolean deleteById(int Id);
 }

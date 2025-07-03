@@ -16,10 +16,8 @@ import java.util.stream.Collectors;
 @Component
 public class EvaluationConverter {
 
-     //TODO: remove autowired, make it final, have service here instead of repository class
     private  final EmployeeService employeeService;
 
-    //TODO: remove autowired, make it final, have service here instead of repository class
     private final JobsService jobsService;
 
     public Evaluation toEntity(EvaluationDto evaluationDto) {

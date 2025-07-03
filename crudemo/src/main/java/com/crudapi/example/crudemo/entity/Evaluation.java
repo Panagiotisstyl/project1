@@ -27,7 +27,7 @@ public class Evaluation {
     private Jobs job;
 
     @Column(name="yearsOfEmpl")
-    private int yearsOfEmpl; //TODO: change name
+    private int yearsOfEmpl;
 
     @Column(name="score")
     private int score;
