@@ -73,6 +73,14 @@ public class EvaluationRestControllerTest extends ControllerTestHelper{
             assertThat(actualEvali.getScore()).isEqualTo(expectedEvali.getScore());
         }
 
+        var resultSort=performGet("/api/v1/evaluation?sortBy=score&direction=DESC");
+
+        List<EvaluationResponseDto> expectedEval2=readingValue(resultSort,new TypeReference<List<EvaluationResponseDto>>() {});
+
+        assertThat(evaluationRepository.findAll()).hasSize(2);
+
+        assertThat(expectedEval2.getFirst().getScore()).isEqualTo(expectedEval.get(1).getScore());
+
     }
 
     @Test

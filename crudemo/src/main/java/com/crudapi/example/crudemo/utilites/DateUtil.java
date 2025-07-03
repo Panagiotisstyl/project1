@@ -8,13 +8,12 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeParseException;
 import java.util.Date;
 
 @NoArgsConstructor(access= AccessLevel.PRIVATE)
 public class DateUtil {
 
-    private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+
 
     public static String toDateString(long epochdate) {
 
@@ -31,12 +30,5 @@ public class DateUtil {
 
     }
 
-    public static void validateDateFormat(String dateString) {
-        try{
-            LocalDate.parse(dateString, formatter);
-        }catch(DateTimeParseException e){
-            throw new IllegalArgumentException("Invalid date format");
-        }
-    }
 
 }

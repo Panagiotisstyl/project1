@@ -3,6 +3,9 @@ package com.crudapi.example.crudemo.factories;
 import com.crudapi.example.crudemo.dtos.EmployeeDto;
 import com.crudapi.example.crudemo.entity.Employee;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+
 public class EmployeeFactory {
 
     public static Employee createEmployee(String firstName, String lastName){
@@ -19,7 +22,7 @@ public class EmployeeFactory {
                 .firstName(firstName)
                 .lastName(lastName)
                 .email("panstyl@email.com")
-                .dateJoined("01-07-2025")
+                .dateJoined(LocalDate.parse("01-07-2025", DateTimeFormatter.ofPattern("dd-MM-yyyy")))
                 .build();
     }
 }

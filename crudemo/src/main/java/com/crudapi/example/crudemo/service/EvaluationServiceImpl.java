@@ -2,8 +2,8 @@ package com.crudapi.example.crudemo.service;
 
 import com.crudapi.example.crudemo.dao.EvaluationRepository;
 import com.crudapi.example.crudemo.entity.Evaluation;
-import jakarta.annotation.Nullable;
 import lombok.RequiredArgsConstructor;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
@@ -42,8 +42,13 @@ public class EvaluationServiceImpl implements EvaluationService {
     }
 
     @Override
-    public void deleteById(int id) {
-        evaluationRepository.deleteById(id);
+    public boolean deleteById(int id) {
+        try{
+            evaluationRepository.deleteById(id);
+            return true;
+        }catch(EmptyResultDataAccessException e){
+            return false;
+        }
     }
 
     @Override

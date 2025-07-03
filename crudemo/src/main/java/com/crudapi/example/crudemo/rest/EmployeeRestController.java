@@ -46,8 +46,9 @@ public class EmployeeRestController {
     //TODO: instead of returning String return Void
     @DeleteMapping("/employees/{employeeId}")
     public void deleteEmployee(@PathVariable int employeeId) {
-       employeeService.findById(employeeId);
-       employeeService.deleteById(employeeId);
+        if(!employeeService.deleteById(employeeId))
+            throw new RuntimeException("Employee not found");
+
     }
 
 

@@ -45,7 +45,9 @@ public class JobsRestController {
 
     @DeleteMapping("/jobs/{jobsId}")
     public void deleteJob(@PathVariable int jobsId) {
-        jobsService.findById(jobsId);
-        jobsService.deleteById(jobsId);
+
+        if(!jobsService.deleteById(jobsId))
+            throw new RuntimeException("Job not found");
+
     }
 }

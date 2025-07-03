@@ -39,7 +39,7 @@ public class EmployeeRestControllerTest extends ControllerTestHelper{
         assertThat(returnedEmployee.getFirstName()).isEqualTo(employeeDto.getFirstName());
         assertThat(returnedEmployee.getLastName()).isEqualTo(employeeDto.getLastName());
         assertThat(returnedEmployee.getEmail()).isEqualTo(employeeDto.getEmail());
-        assertThat(returnedEmployee.getDateJoined()).isEqualTo(employeeDto.getDateJoined());
+        assertThat(returnedEmployee.getDateJoined()).isEqualTo(DateUtil.toDateString((DateUtil.toEpoch(employeeDto.getDateJoined()))));
 
         assertThat(employeeRepository.findAll()).hasSize(1);
 
@@ -117,7 +117,7 @@ public class EmployeeRestControllerTest extends ControllerTestHelper{
         assertThat(employee.getFirstName()).isEqualTo(employeeDto.getFirstName());
         assertThat(employee.getLastName()).isEqualTo(employeeDto.getLastName());
         assertThat(employee.getEmail()).isEqualTo(employeeDto.getEmail());
-        assertThat(DateUtil.toDateString(employee.getDateJoined())).isEqualTo(employeeDto.getDateJoined());
+        assertThat(DateUtil.toDateString(employee.getDateJoined())).isEqualTo(DateUtil.toDateString((DateUtil.toEpoch(employeeDto.getDateJoined()))));
 
     }
 
