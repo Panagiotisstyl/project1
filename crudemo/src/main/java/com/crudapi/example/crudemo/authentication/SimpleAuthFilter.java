@@ -13,7 +13,7 @@ import java.io.IOException;
 @Component
 public class SimpleAuthFilter extends OncePerRequestFilter {
 
-    private static final String AUTH_TOKEN="mappouros";
+    private static final String AUTH_TOKEN="testauth";
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
