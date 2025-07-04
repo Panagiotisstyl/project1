@@ -6,6 +6,7 @@ import com.crudapi.example.crudemo.dtos.EvaluationResponseDto;
 import com.crudapi.example.crudemo.entity.Evaluation;
 import com.crudapi.example.crudemo.service.EvaluationService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -47,11 +48,11 @@ public class EvaluationRestController {
     }
 
     @DeleteMapping("/evaluation/{evaluationId}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteEvaluation(@PathVariable int evaluationId) {
         if(!evaluationService.deleteById(evaluationId))
-            throw new RuntimeException("Evaluation id not found");
+            throw new RuntimeException("Evaluation not found");
 
     }
-
 
 }

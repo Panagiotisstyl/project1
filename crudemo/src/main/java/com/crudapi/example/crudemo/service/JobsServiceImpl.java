@@ -3,7 +3,6 @@ package com.crudapi.example.crudemo.service;
 import com.crudapi.example.crudemo.dao.JobsRepository;
 import com.crudapi.example.crudemo.entity.Jobs;
 import lombok.RequiredArgsConstructor;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -38,13 +37,9 @@ public class JobsServiceImpl implements JobsService {
 
     @Override
     public boolean deleteById(int Id) {
-
-        try{
-            jobRepository.deleteById(Id);
-            return true;
-        }catch(EmptyResultDataAccessException e){
+        if(!jobRepository.existsById(Id))
             return false;
-        }
-
+        jobRepository.deleteById(Id);
+        return true;
     }
 }

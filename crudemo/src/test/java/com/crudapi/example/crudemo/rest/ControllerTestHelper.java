@@ -3,8 +3,6 @@ package com.crudapi.example.crudemo.rest;
 import com.crudapi.example.crudemo.dao.EmployeeRepository;
 import com.crudapi.example.crudemo.dao.EvaluationRepository;
 import com.crudapi.example.crudemo.dao.JobsRepository;
-import com.crudapi.example.crudemo.dtos.EmployeeDto;
-import com.crudapi.example.crudemo.entity.Employee;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
@@ -65,10 +63,10 @@ public abstract class  ControllerTestHelper {
 
     }
 
-    public MvcResult performDelete(String url) throws Exception {
-        return mockMvc.perform(delete(url)
+    public void performDelete(String url) throws Exception {
+                 mockMvc.perform(delete(url)
                         .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
+                .andExpect(status().isNoContent())
                 .andReturn();
     }
 
@@ -80,8 +78,8 @@ public abstract class  ControllerTestHelper {
                 .andReturn();
     }
 
-    public <T> MvcResult performPut(String url, T dto) throws Exception {
-        return           mockMvc.perform(put(url)
+    public <T> void performPut(String url, T dto) throws Exception {
+                mockMvc.perform(put(url)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(dto)))
                 .andExpect(status().isOk())

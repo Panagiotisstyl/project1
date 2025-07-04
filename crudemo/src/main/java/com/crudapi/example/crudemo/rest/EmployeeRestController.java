@@ -6,6 +6,7 @@ import com.crudapi.example.crudemo.dtos.EmployeeResponseDto;
 import com.crudapi.example.crudemo.entity.Employee;
 import com.crudapi.example.crudemo.service.EmployeeService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -43,11 +44,13 @@ public class EmployeeRestController {
 
 
     @DeleteMapping("/employees/{employeeId}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteEmployee(@PathVariable int employeeId) {
         if(!employeeService.deleteById(employeeId))
             throw new RuntimeException("Employee not found");
 
     }
+
 
 
 }

@@ -11,12 +11,14 @@ import com.crudapi.example.crudemo.utilites.DateUtil;
 import com.fasterxml.jackson.core.type.TypeReference;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-
-
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 
 public class EmployeeRestControllerTest extends ControllerTestHelper{
@@ -42,6 +44,8 @@ public class EmployeeRestControllerTest extends ControllerTestHelper{
         assertThat(returnedEmployee.getDateJoined()).isEqualTo(DateUtil.toDateString((DateUtil.toEpoch(employeeDto.getDateJoined()))));
 
         assertThat(employeeRepository.findAll()).hasSize(1);
+
+
 
     }
 
@@ -98,6 +102,13 @@ public class EmployeeRestControllerTest extends ControllerTestHelper{
         assertThat(returnedEmployee.getLastName()).isEqualTo(employeeDto.getLastName());
         assertThat(returnedEmployee.getEmail()).isEqualTo(employeeDto.getEmail());
 
+        //HANDLING EXCEPTION
+
+        mockMvc.perform(get("/api/v1/employees/1231"))
+                .andExpect(status().isBadRequest())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.statusCode").value(400))
+                .andExpect(jsonPath("$.message").value("Employee not found"));
     }
 
     @Test
@@ -124,10 +135,21 @@ public class EmployeeRestControllerTest extends ControllerTestHelper{
     @Test
     public void testDeleteEmployee()  throws Exception {
 
+        //SUCCESSFUL DELETION
+
         Employee pan=employeeRepository.save(EmployeeFactory.createEmployee("Pan", "Styl"));
 
         performDelete("/api/v1/employees/"+pan.getId());
 
         assertThat(employeeRepository.findById(pan.getId())).isEmpty();
+
+        //THROWING EXCEPTION, HANDLER CATCHING IT
+
+        mockMvc.perform(delete("/api/v1/employees/123"))
+                .andExpect(status().isBadRequest())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.statusCode").value(400))
+                .andExpect(jsonPath("$.message").value("Employee not found"));
+
     }
 }
